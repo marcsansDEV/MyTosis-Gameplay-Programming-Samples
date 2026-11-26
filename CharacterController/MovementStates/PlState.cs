@@ -70,6 +70,7 @@ public abstract class PlState: MonoBehaviour
             if (l_State.CanEnterState())
             {
                 m_PlayerCtrl.Fsm.ChangeState(l_StateType);
+                break;
             }
         }
     }
