@@ -1,0 +1,24 @@
+flowchart TB
+    subgraph SETUP["Once, when the level starts"]
+        direction LR
+        S1["<b>Ability asset</b><br/>Shared template"]
+        S2["<b>ScriptableObject.Instantiate</b><br/>One clone per Tosi"]
+        S3["<b>Init(LilTosi)</b><br/>Each clone keeps its own state"]
+        S1 --> S2 --> S3
+    end
+
+    subgraph RUN["Every time the ability button is pressed"]
+        direction LR
+        G1["<b>1. Can the player act?</b><br/>Walking, not creating,<br/>not throwing, no possession"]
+        G2["<b>2. Held or released?</b><br/>Picks HeldAbility<br/>or ReleasedAbility"]
+        G3["<b>3. CanActivate()</b><br/>Unlocked, not active, cooldown ready,<br/>Tosi exists and is not being absorbed"]
+        ACT["<b>4. Activate()</b><br/>Coroutine runs on the LilTosi,<br/>because a ScriptableObject<br/>cannot run coroutines"]:::key
+        G1 --> G2 --> G3 --> ACT
+    end
+
+    NO["<b>Any check fails</b><br/>The press is ignored"]:::ext
+    SETUP ~~~ RUN
+    G1 -.-> NO
+    G3 -.-> NO
+    %%MAIN 2,3,4
+    %%SECONDARY 0,1,6,7

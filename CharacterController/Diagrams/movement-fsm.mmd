@@ -1,0 +1,10 @@
+stateDiagram-v2
+    direction LR
+    [*] --> Walk
+    Walk --> Glide: Glide pressed in the air<br/>while not holding<br/>or creating a Tosi
+    Glide --> Walk: Glide released<br/>or grounded
+    Glide --> Walk: Forced exit (hit, bouncer)
+    Walk: <b>Walk</b><br/>Max speed 10 · Acceleration 100<br/>Gravity ×1
+    Glide: <b>Glide</b><br/>Max speed 7 · Acceleration 70<br/>Gravity ×0.25 · Max fall speed 3
+    class Walk key
+    class Glide quiet

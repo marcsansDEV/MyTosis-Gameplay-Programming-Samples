@@ -1,0 +1,20 @@
+flowchart TB
+    P["<b>Player</b><br/>Hub that exposes every component"]:::hub
+    H["<b>PlayerHealth</b><br/>Knock-up and stun"]:::quiet
+    A["<b>PlayerAttack</b><br/>Speed and gravity modifiers"]:::quiet
+    BEFORE["<b>OnBeforeMove subscribers</b><br/>PlayerMoveFSM: Horizontal steering<br/>PlayerJump: Vertical override<br/>Current PlState: Walk or Glide"]
+    EC["<b>EntityController</b><br/>Gravity, ground check, sliding,<br/>wall bounce, lock and stun"]:::key
+    AFTER["<b>OnAfterMove subscriber</b><br/>PlayerRotation: Rotation policies"]
+    CC[("<b>Unity CharacterController</b>")]
+    DT["<b>AdaptedDeltaTime</b><br/>From the Abilities sample"]:::ext
+
+    P -. "Owns" .-> EC
+    A -- "Attack events" --> BEFORE
+    H -- "AddImpulse, LockMovement" --> EC
+    EC -- "1. Raise event" --> BEFORE
+    BEFORE -- "2. AddImpulse" --> EC
+    EC -- "3. Move" --> CC
+    EC -- "4. Raise event" --> AFTER
+    EC -. "Reads delta time" .-> DT
+    %%MAIN 3,4,5,6
+    %%SECONDARY 0,1,2,7

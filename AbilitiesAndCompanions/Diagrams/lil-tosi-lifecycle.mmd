@@ -1,0 +1,14 @@
+stateDiagram-v2
+    direction LR
+    [*] --> Hidden: Level starts
+    Hidden --> Held: Create<br/>(absorbs the other one)
+    Held --> Released: Throw, put down<br/>or player attacks
+    Released --> Held: Pick up<br/>(closest Tosi in range)
+    Held --> Hidden: Absorbed
+    Released --> Hidden: Absorbed by damage,<br/>explosion or a new Tosi
+    Hidden: <b>Hidden</b><br/>Invisible, controller off.<br/>The same instance is reused,<br/>never destroyed
+    Held: <b>Held</b><br/>Held ability available
+    Released: <b>Released</b><br/>Released ability available
+    class Hidden key
+    class Released quiet
+    class Held quiet

@@ -1,0 +1,53 @@
+classDiagram
+    direction TB
+    class BaseLilTosiAbility {
+        <<ScriptableObject>>
+        +bool IsUnlocked
+        +bool Active
+        #float m_MaxCharge
+        +Init(LilTosi lilTosi)
+        +TryActivate()
+        +CanActivate() bool
+        #Activate()*
+        #Canceled() bool
+        +Reset()
+    }
+    class TeleportLilTosiAbility {
+        Places a mark, second press teleports
+    }
+    class PossessionLilTosiAbility {
+        Player controls the Tosi
+    }
+    class SlowTimeLilTosiAbility {
+        +float AdaptedDeltaTime$
+        +Action~bool~ OnSlowTimeChanged$
+    }
+    class ExplosionLilTosiAbility {
+        Detonates and consumes the Tosi
+    }
+    class LilTosi {
+        <<abstract>>
+        +HeldAbility
+        +ReleasedAbility
+        +Controller EntityController
+        +BeHeld(Transform parent)
+        +BeThrown(Vector3 velocity)
+        +GetAbsorbed()
+    }
+    class TipiTosi {
+        Held: Teleport
+        Released: Possession
+    }
+    class TenseTosi {
+        Held: SlowTime
+        Released: Explosion
+    }
+    BaseLilTosiAbility <|-- TeleportLilTosiAbility
+    BaseLilTosiAbility <|-- PossessionLilTosiAbility
+    BaseLilTosiAbility <|-- SlowTimeLilTosiAbility
+    BaseLilTosiAbility <|-- ExplosionLilTosiAbility
+    LilTosi <|-- TipiTosi
+    LilTosi <|-- TenseTosi
+    LilTosi *-- BaseLilTosiAbility : Owns two runtime clones
+    class BaseLilTosiAbility:::key
+    class LilTosi:::hub

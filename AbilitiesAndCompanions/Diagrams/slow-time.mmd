@@ -1,0 +1,24 @@
+flowchart LR
+    ST["<b>SlowTimeLilTosiAbility</b><br/>Held ability of the Tense Tosi"]:::key
+
+    TS["<b>Time.timeScale</b><br/>1 → 0.05 over 0.5 s<br/>fixedDeltaTime scaled too"]
+    W["<b>The world</b><br/>Enemies, hazards and physics<br/>run 20 times slower"]
+
+    ADT["<b>AdaptedDeltaTime</b><br/>Returns unscaled time while slowed,<br/>0 while paused"]
+    EC["<b>EntityController</b><br/>Player and Tosis keep<br/>their normal speed"]
+
+    EV["<b>OnSlowTimeChanged</b><br/>Static event"]
+    AD["<b>Adapters</b><br/>Animators, particles and Cinemachine<br/>switch to unscaled time"]
+    FX["<b>Feedback</b><br/>Post-processing volume<br/>and afterimage trail"]
+    OT["<b>Other listeners</b><br/>Hazards and enemies,<br/>outside this sample"]:::ext
+
+    ST -- "1. Scales" --> TS
+    TS --> W
+    ST -- "2. Switches" --> ADT
+    ADT --> EC
+    ST -- "3. Raises" --> EV
+    EV --> AD
+    EV --> FX
+    EV -.-> OT
+    %%MAIN 0,2,3,4,5,6
+    %%SECONDARY 1,7

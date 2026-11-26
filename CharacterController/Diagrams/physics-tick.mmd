@@ -1,0 +1,23 @@
+sequenceDiagram
+    participant EC as EntityController
+    participant B as OnBeforeMove subscribers
+    participant CC as Unity CharacterController
+    participant A as OnAfterMove subscriber
+
+    Note over EC,A: Every FixedUpdate, with dt = min(0.02, AdaptedFixedDeltaTime)
+    Note right of EC: 1. Apply gravity if airborne
+    rect {{phase1}}
+        EC->>B: 2. OnBeforeMove
+        B->>EC: AddImpulse per axis
+        Note right of B: FSM: horizontal velocity<br/>Jump: vertical velocity<br/>Glide: clamps falling speed
+    end
+    Note right of EC: Push away from walls<br/>if sliding last tick
+    EC->>CC: 3. Move(velocity × dt)
+    CC-->>EC: Collisions: wall bounce, leftover velocity
+    rect {{phase2}}
+        EC->>A: 4. OnAfterMove
+        Note right of A: PlayerRotation faces<br/>the final velocity.
+    end
+    Note right of EC: 5. Ground check<br/>SphereCast + slide raycast
+    EC-->>B: OnIsGroundedChanged · OnLanded
+    Note right of B: Only when the<br/>grounded state changes.
