@@ -171,10 +171,9 @@ public class PossessionLilTosiAbility : BaseLilTosiAbility
         var l_NumberFound = Physics.OverlapSphereNonAlloc(m_LilTosi.transform.position, m_AttackRange, m_Colliders, m_AttackLayerMask);
         if (l_NumberFound > 0)
         {
-            foreach (var l_Collider in m_Colliders)
+            for (int i = 0; i < l_NumberFound; i++)
             {
-                if (l_Collider != null)
-                    AttackIfAttackable(l_Collider);
+                AttackIfAttackable(m_Colliders[i]);
             }
         }
     }
