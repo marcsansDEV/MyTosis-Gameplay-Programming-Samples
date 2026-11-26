@@ -105,9 +105,9 @@ public class PlayerHealth : BasePlayerComponent, ITosiHealthSystem, IRestartLeve
     public void Heal(int amount)
     {
         m_Health += amount;
-        GameUIManager.GetInstance().TryUpdateHearts(m_Health);
         if (m_Health > m_MaxHealth)
             m_Health = m_MaxHealth;
+        GameUIManager.GetInstance().TryUpdateHearts(m_Health);
         m_OnHeal.Invoke();
         RuntimeManager.PlayOneShot("{ed601415-92be-4c68-9e3e-2e22379e8975}");
     }
