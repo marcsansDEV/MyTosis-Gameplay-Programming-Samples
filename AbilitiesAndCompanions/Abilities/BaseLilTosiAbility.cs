@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public abstract class BaseLilTosiAbility : ScriptableObject
 {
@@ -11,9 +12,10 @@ public abstract class BaseLilTosiAbility : ScriptableObject
     [HideInInspector]
     public bool IsUnlocked = false;
     
-    protected float m_TimeLiquidAmmount;
+    protected float m_Charge;
     [Header("======= BASE PROPERTIES ========")] 
-    [SerializeField] protected float m_MaxTimeLiquid;
+    [FormerlySerializedAs("m_MaxTimeLiquid")]
+    [SerializeField] protected float m_MaxCharge;
     [SerializeField] protected List<Sprite> m_Icons;
     [SerializeField] private Color m_Color;
     
@@ -21,13 +23,13 @@ public abstract class BaseLilTosiAbility : ScriptableObject
     public LilTosi LilTosi => m_LilTosi;
     public Sprite Icon { get; protected set; }
     public Color Color => m_Color;
-    public float TimeLiquidFraction => m_MaxTimeLiquid == 0? 1 : Mathf.Clamp01(m_TimeLiquidAmmount / m_MaxTimeLiquid);
+    public float ChargeFraction => m_MaxCharge == 0? 1 : Mathf.Clamp01(m_Charge / m_MaxCharge);
     public virtual void Init(LilTosi lilTosi)
     {
         m_LilTosi = lilTosi;
         m_Player = Player.GetInstance();
         Icon = m_Icons[0];
-        m_TimeLiquidAmmount = m_MaxTimeLiquid;
+        m_Charge = m_MaxCharge;
         if (m_LilTosi.IsUnlocked)
         {
             IsUnlocked = true;
@@ -46,7 +48,7 @@ public abstract class BaseLilTosiAbility : ScriptableObject
 
     public virtual bool CanActivate()
     {
-        return IsUnlocked && !Active && m_TimeLiquidAmmount >= m_MaxTimeLiquid && m_LilTosi.IsExisting && !m_LilTosi.IsBeingAbsorbed;
+        return IsUnlocked && !Active && m_Charge >= m_MaxCharge && m_LilTosi.IsExisting && !m_LilTosi.IsBeingAbsorbed;
     }
 
     protected abstract void Activate();
@@ -60,7 +62,7 @@ public abstract class BaseLilTosiAbility : ScriptableObject
     protected void StopAllCoroutines() => m_LilTosi.StopAllCoroutines();
     protected void ResetCooldown()
     {
-        m_TimeLiquidAmmount = m_MaxTimeLiquid;
+        m_Charge = m_MaxCharge;
     }
 
     public virtual void Reset()

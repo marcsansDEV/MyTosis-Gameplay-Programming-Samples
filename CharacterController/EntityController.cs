@@ -28,7 +28,6 @@ public class EntityController : MonoBehaviour, IRestartLevelElement
     public float Gravity = -9.81f;
     [Range(0f, 2f)]
     [SerializeField] private float m_BaseWallBounciness;
-    // [SerializeField] private float m_MaxSlopeAngle;
     [SerializeField] private bool m_IsSliding;
     [SerializeField] private LayerMask m_GroundedLayerMask;
     [SerializeField] private LayerMask m_SlideCheckLayermask;
@@ -112,19 +111,7 @@ public class EntityController : MonoBehaviour, IRestartLevelElement
                 m_IsSliding = false;
             }
 
-            //if (HorVelocity.magnitude > m_MaxMagnitudeHor)
-            //{
-            //    var l_Vel = HorVelocity.normalized * m_MaxMagnitudeHor;
-            //    l_Vel.y = m_Velocity.y;
-            //    m_Velocity = l_Vel;
-            //}
 
-            //if (Mathf.Abs(m_Velocity.y) > m_MaxMagnitudeVer)
-            //{
-            //    Debug.Log(m_Velocity.y + " " + name);
-            //    m_Velocity.y = m_MaxMagnitudeVer * Mathf.Sign(m_Velocity.y);
-            //}
-            
             m_CharacterController.Move(m_Velocity * AdaptedFixedDeltaTime);
             OnAfterMove?.Invoke();
         }
@@ -148,7 +135,7 @@ public class EntityController : MonoBehaviour, IRestartLevelElement
         }
         else if (m_CharacterController.isGrounded)
         {
-            var l_Dir = UtilsMethods.GetDirecton(m_LastHitPoint, transform.position);
+            var l_Dir = UtilsMethods.GetDirection(m_LastHitPoint, transform.position);
             l_Dir.y = 0f;
             Ray l_Ray = new Ray(m_LastHitPoint + l_Dir.normalized * 0.05f, Vector3.down);
             var l_Distance = .4f;

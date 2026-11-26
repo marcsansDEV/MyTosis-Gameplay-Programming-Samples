@@ -65,8 +65,6 @@ public class PlayerRotation : BasePlayerComponent
 
     private void UpdateRotation()
     {
-        // if (m_Player.Attack.IsOnAttack)
-        //     return;
         Vector3 l_Dir;
         switch (m_RotationPolicy)
         {

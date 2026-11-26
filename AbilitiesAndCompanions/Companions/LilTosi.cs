@@ -4,6 +4,7 @@ using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 public abstract class LilTosi : MonoBehaviour, IRestartLevelElement
@@ -12,7 +13,8 @@ public abstract class LilTosi : MonoBehaviour, IRestartLevelElement
     public BaseLilTosiAbility HeldAbility { get; private set;}
     [SerializeField] private BaseLilTosiAbility m_HeldAbilityRef;
     [SerializeField] private BaseLilTosiAbility m_ReleasedAbilityRef;
-    [SerializeField] private float m_GetAbsorvedDelay;
+    [FormerlySerializedAs("m_GetAbsorvedDelay")]
+    [SerializeField] private float m_GetAbsorbedDelay;
     private bool m_Possessed;
 
     
@@ -25,7 +27,7 @@ public abstract class LilTosi : MonoBehaviour, IRestartLevelElement
 
     protected Player m_Player;
     protected GameObject m_Mesh;
-    private bool m_IsGettingAbsorved;
+    private bool m_IsGettingAbsorbed;
 
     [SerializeField] private Sprite[] m_AbilityIcons = new Sprite[2];
 
@@ -59,7 +61,7 @@ public abstract class LilTosi : MonoBehaviour, IRestartLevelElement
     public bool IsUnlocked =>
         GameManagerStateMachine.Instance.Context.DynamicData.Gameplay.UnlockedLilTosis.Contains(Type);
 
-    public bool IsBeingAbsorbed => m_IsGettingAbsorved;
+    public bool IsBeingAbsorbed => m_IsGettingAbsorbed;
 
 
     private void InitAbilities()
@@ -91,7 +93,7 @@ public abstract class LilTosi : MonoBehaviour, IRestartLevelElement
 
     private void GetAbsorbedEvent()
     {
-        GetAbsorbed(m_GetAbsorvedDelay);
+        GetAbsorbed(m_GetAbsorbedDelay);
     }
 
     private void OnDisable()
@@ -133,7 +135,7 @@ public abstract class LilTosi : MonoBehaviour, IRestartLevelElement
 
     private void ActivateAbility()
     {
-        if (m_IsGettingAbsorved || !IsExisting)
+        if (m_IsGettingAbsorbed || !IsExisting)
             return;
         if (IsHeldByPlayer)
         {
@@ -148,7 +150,6 @@ public abstract class LilTosi : MonoBehaviour, IRestartLevelElement
     public void SetExisting(bool show)
     {
         GetComponentInChildren<MeshHider>().SetActiveMesh(show);
-        // m_Mesh.gameObject.SetActive(show);
 
         IsExisting = show;
         Controller.AddImpulse(Vector3.zero, true, true);
@@ -181,7 +182,7 @@ public abstract class LilTosi : MonoBehaviour, IRestartLevelElement
     {
         if (invokeAction) OnThrown?.Invoke();
         Controller.enabled = true;
-        transform.SetParent(null); //maybe fer que parent sigui liltosipack
+        transform.SetParent(null); // Maybe parent it to the LilTosiPack instead
         IsHeldByPlayer = false;
         Controller.UseGravity = true;
         Controller.AddImpulse(throwVelocity, true, true);
@@ -204,35 +205,33 @@ public abstract class LilTosi : MonoBehaviour, IRestartLevelElement
     }
 
     
-    public void GetAbsorbed(float l_Time = -1)
+    public void GetAbsorbed(float time = -1)
     {
         if (!IsExisting) return;
 
-        if (l_Time == -1)
+        if (time == -1)
         {
-            l_Time = m_GetAbsorvedDelay;
+            time = m_GetAbsorbedDelay;
         }
         
-        // Debug.Log("Get Absorbed: " + name);
         
         StopAllCoroutines();
         HeldAbility.Reset();
         ReleasedAbility.Reset();
-        StartCoroutine(GetAbsorbedCoroutine(l_Time));
+        StartCoroutine(GetAbsorbedCoroutine(time));
     }
 
-    private IEnumerator GetAbsorbedCoroutine(float m_waitTime)
+    private IEnumerator GetAbsorbedCoroutine(float waitTime)
     {
-        m_IsGettingAbsorved = true;
-        yield return new WaitForSeconds(m_waitTime);
+        m_IsGettingAbsorbed = true;
+        yield return new WaitForSeconds(waitTime);
         //PLAY PARTICLES HERE
         BeAbsorbed();
-        m_IsGettingAbsorved = false;
+        m_IsGettingAbsorbed = false;
     }
 
     protected virtual void BeAbsorbed()
     {
-        // Debug.Log("Be Absorbed: " + name);
         BeThrown(Vector3.zero, false);
         SetExisting(false);
         OnAbsorbed?.Invoke();

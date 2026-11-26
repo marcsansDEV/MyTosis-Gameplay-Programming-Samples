@@ -8,7 +8,7 @@ public class TeleportMark : MonoBehaviour
 
     private List<GameObject> m_AfterImages = new List<GameObject>();
             
-    public Material m_AppliedMaterial;
+    [SerializeField] private Material m_AppliedMaterial;
     
     private void Awake()
     {
@@ -42,21 +42,6 @@ public class TeleportMark : MonoBehaviour
     
     void GenerateAfterImageBody()
     {
-        // GameObject obj = new GameObject();
-        //
-        // obj.transform.SetParent(this.transform);
-        // obj.transform.rotation = transform.rotation;
-        //     
-        // MeshRenderer l_MeshRenderer = obj.AddComponent<MeshRenderer>();
-        // MeshFilter l_MeshFilter = obj.AddComponent<MeshFilter>();
-        //
-        // Mesh l_Mesh = new Mesh();
-        // m_PlayerRenderer.BakeMesh(l_Mesh);
-        //
-        // l_MeshFilter.mesh = l_Mesh;
-        // l_MeshRenderer.material = m_AppliedMaterial;
-        //
-        // m_AfterImages.Add(obj);
         
         OneAfterImage(m_PlayerRenderer, true);
         OneAfterImage(m_TipiRenderer, false);
@@ -64,20 +49,20 @@ public class TeleportMark : MonoBehaviour
     
     private void OneAfterImage(SkinnedMeshRenderer skinnedMeshRenderer, bool isPlayer)
     {
-        GameObject obj = new GameObject(nameof(skinnedMeshRenderer));
+        GameObject l_Obj = new GameObject(nameof(skinnedMeshRenderer));
 
-        obj.transform.SetParent(this.transform);
-        obj.transform.localPosition = isPlayer ? Vector3.zero : Vector3.forward * 1 + Vector3.up * .5f;
-        obj.transform.rotation = transform.rotation;
+        l_Obj.transform.SetParent(this.transform);
+        l_Obj.transform.localPosition = isPlayer ? Vector3.zero : Vector3.forward * 1 + Vector3.up * .5f;
+        l_Obj.transform.rotation = transform.rotation;
             
-        var l_MeshRenderer = obj.AddComponent<MeshRenderer>();
-        MeshFilter l_MeshFilter = obj.AddComponent<MeshFilter>();
+        var l_MeshRenderer = l_Obj.AddComponent<MeshRenderer>();
+        MeshFilter l_MeshFilter = l_Obj.AddComponent<MeshFilter>();
 
         Mesh l_Mesh = new Mesh();
         skinnedMeshRenderer.BakeMesh(l_Mesh);
         
         l_MeshFilter.mesh = l_Mesh;
         l_MeshRenderer.material = m_AppliedMaterial;
-        m_AfterImages.Add(obj);
+        m_AfterImages.Add(l_Obj);
     }
 }

@@ -28,25 +28,25 @@ public class LilTosiPack : Singleton<LilTosiPack>
     }
     
 
-    private void ShowLilTosis(bool _Show)
+    private void ShowLilTosis(bool show)
     {
-        foreach (LilTosi lilTis in m_LilTosis)
+        foreach (LilTosi l_LilTosi in m_LilTosis)
         {
-            lilTis.SetExisting(_Show);
+            l_LilTosi.SetExisting(show);
         }
     }
 
-    public T GetLilTosi<T>(LilTosi.TType _Type) where T : LilTosi
+    public T GetLilTosi<T>(LilTosi.TType type) where T : LilTosi
     {
-        foreach (var lilTosi in m_LilTosis)
+        foreach (var l_LilTosi in m_LilTosis)
         {
-            if ((lilTosi.Type == _Type))
+            if ((l_LilTosi.Type == type))
             {
-                return lilTosi as T;
+                return l_LilTosi as T;
             }
         }
 
-        Debug.LogError(("Could not return the type {0} requested.", _Type.ToString()));
+        Debug.LogError(("Could not return the type {0} requested.", type.ToString()));
         return null;
     }
 }

@@ -73,7 +73,6 @@ public class LilTosiThrower : MonoBehaviour, IRestartLevelElement
 
     private void OnEnable()
     {
-        // m_Player.Creator.OnCreate.AddListener(HoldLilTosi);
         m_Player.Attack.OnEnterAttack += PutDownLilTosi;
         LevelManager.GetInstance().AddResetElement(this);
 
@@ -81,7 +80,6 @@ public class LilTosiThrower : MonoBehaviour, IRestartLevelElement
 
     private void OnDisable()
     {
-        // m_Player.Creator.OnCreate.RemoveListener(HoldLilTosi);
         m_Player.Attack.OnEnterAttack -= PutDownLilTosi; 
         LevelManager.GetInstance().RemoveResetElement(this);
     }
@@ -183,7 +181,7 @@ public class LilTosiThrower : MonoBehaviour, IRestartLevelElement
         HeldLilTosi.IsPreparedToThrow = false;
         if (CanThrow())
             ThrowLilTosi(l_ThrowVel);
-        //invisibilizar
+        // Hide the trajectory preview
         IsThrowing = false;
         m_ThrowPointRenderer.enabled = false;
         m_Lr.enabled = false;
@@ -234,7 +232,7 @@ public class LilTosiThrower : MonoBehaviour, IRestartLevelElement
         RuntimeManager.PlayOneShot(m_PutDownReference);
         ThrowLilTosi(l_Vel);
     }
-    public void DeatachLilTosi(LilTosi lilTosi)
+    public void DetachLilTosi(LilTosi lilTosi)
     {
         if (HeldLilTosi != null && HeldLilTosi == lilTosi)
         {
@@ -274,13 +272,13 @@ public class LilTosiThrower : MonoBehaviour, IRestartLevelElement
         }
         return l_Positions;
     }
-    private int GetUnblockedParabolicShootPointsNumber(List<Vector3> l_Positions)
+    private int GetUnblockedParabolicShootPointsNumber(List<Vector3> positions)
     {
         int l_Count = 0;
-        for (int i = 0; i < l_Positions.Count; i++)
+        for (int i = 0; i < positions.Count; i++)
         {
             l_Count++;
-            Vector3 l_Point = l_Positions[i];
+            Vector3 l_Point = positions[i];
             bool l_IsBlocked = Physics.OverlapSphere(l_Point, m_LandingRadius, m_CollisionLayer).Length > 0;
             if (l_IsBlocked)
             {
@@ -306,7 +304,7 @@ public class LilTosiThrower : MonoBehaviour, IRestartLevelElement
         if (HeldLilTosi!=null)
             HeldLilTosi.IsPreparedToThrow = false;
         StopAllCoroutines();
-        DeatachLilTosi(HeldLilTosi);
+        DetachLilTosi(HeldLilTosi);
         m_Lr.enabled = false;
         m_ThrowPointRenderer.enabled = false;
         IsThrowing = false;

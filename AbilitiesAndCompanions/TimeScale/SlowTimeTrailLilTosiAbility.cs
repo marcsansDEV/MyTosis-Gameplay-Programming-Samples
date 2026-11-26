@@ -5,25 +5,23 @@ using UnityEngine;
 
 public class SlowTimeTrailLilTosiAbility : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public float m_ActiveTime = 2.0f;
+    [SerializeField] private float m_ActiveTime = 2.0f;
 
     [Header("Mesh")]
-    public float m_MeshRefreshRate = 0.1f;
-    public float m_MeshDestroyDelay = 1f;
-    public Transform m_SpawnPos;
+    [SerializeField] private float m_MeshRefreshRate = 0.1f;
+    [SerializeField] private float m_MeshDestroyDelay = 1f;
+    [SerializeField] private Transform m_SpawnPos;
     [Header("Shader")]
-    public Material m_Mat;
-    public string m_ShaderVarRef;
-    public float m_ShadeVarRate = 0.1f;
-    public float m_ShaderVarRefreshRate = 0.05f;
+    [SerializeField] private Material m_Mat;
+    [SerializeField] private string m_ShaderVarRef;
+    [SerializeField] private float m_ShadeVarRate = 0.1f;
+    [SerializeField] private float m_ShaderVarRefreshRate = 0.05f;
 
     private bool m_IsTrailActive;
-    public SkinnedMeshRenderer[] m_SkinnedMeshRenderers;
+    [SerializeField] private SkinnedMeshRenderer[] m_SkinnedMeshRenderers;
 
     private Player m_Player;
 
-    // Update is called once per frame
     private void Awake()
     {
         m_IsTrailActive = false;
@@ -44,17 +42,8 @@ public class SlowTimeTrailLilTosiAbility : MonoBehaviour
     {
         m_IsTrailActive = isActive;
         StartCoroutine(ActivateSkinnedTrail());
-        // Debug.Log("ONSLOWTIMECHANGED " + m_IsTrailActive);
     }
 
-    // void Update()
-    // {
-    //     if (Input.GetKeyDown(KeyCode.Space)&&!m_IsTrailActive)
-    //     {
-    //             m_IsTrailActive = true;
-    //             StartCoroutine(ActivateSkinnedTrail(m_ActiveTime));
-    //     }
-    // }
     IEnumerator ActivateSkinnedTrail()
     {
         while (m_IsTrailActive)

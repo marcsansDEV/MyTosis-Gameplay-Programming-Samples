@@ -34,7 +34,6 @@ public class PlayerAttack : BasePlayerComponent
     protected override void Awake()
     {
         base.Awake();
-        // m_ExternalTriggerCall = UtilsMethods.ReturnRepeatChild<ExternalTriggerCall>(gameObject);
         m_ExternalTriggerCall = GetComponentInChildren<ExternalTriggerCall>();
         m_TriggerCollider = m_ExternalTriggerCall.GetComponent<SphereCollider>();
     }

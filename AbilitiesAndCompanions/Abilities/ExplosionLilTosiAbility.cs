@@ -60,7 +60,7 @@ public class TenseExplosionSphere
     public Collider[] CurrentCubes;
     Collider[] m_CubesInsideZone;
 
-    TenseExplisionHit m_Hit;
+    TenseExplosionHit m_Hit;
 
     Ray m_Ray;
 
@@ -84,34 +84,30 @@ public class TenseExplosionSphere
     }
     public void CreateExplosion()
     {
-        m_CubesInsideZone = Physics.OverlapSphere(m_Position, m_ExplosionRange); // ~(1<<this layer will be expluded) //maybe noi fa falta la layer pero aixi no entra tants cops al foreach
+        m_CubesInsideZone = Physics.OverlapSphere(m_Position, m_ExplosionRange); // ~(1 << layer) would exclude a layer. A layer mask may not be needed, but it would reduce the foreach iterations
 
         foreach (var l_ObjectsAffectedByTense in m_CubesInsideZone) 
         {
             var l_Explode = l_ObjectsAffectedByTense.GetComponents<ITenseExplode>();
             if (l_Explode.Length>0) 
             {
-                // m_Ray = new Ray(m_Position, (l_ObjectsAffectedByTense.transform.position-m_Position).normalized);
-                // if (Physics.Raycast(m_Ray, out RaycastHit l_RaycastHit, m_ExplosionRange))
-                // {
-                    m_Hit = new TenseExplisionHit(m_Damage, m_ForceApplied, m_SelfForceApplied, m_Position);
-                    foreach (var l_ExplodeInstance in l_Explode)
-                    {
-                        l_ExplodeInstance.HandleTenseExplosion(m_Hit);
-                    }
-                // }
+                m_Hit = new TenseExplosionHit(m_Damage, m_ForceApplied, m_SelfForceApplied, m_Position);
+                foreach (var l_ExplodeInstance in l_Explode)
+                {
+                    l_ExplodeInstance.HandleTenseExplosion(m_Hit);
+                }
             }
         }
     }
 }
 
-public class TenseExplisionHit
+public class TenseExplosionHit
 {
     public int Damage { get; private set; }
     public float ForceApplied { get; private set; }
     public float SelfForceApplied { get; private set; }
     public Vector3 Point { get; private set; }
-    public TenseExplisionHit(int damage, float forceApplied, float selfForceApplied, Vector3 point)
+    public TenseExplosionHit(int damage, float forceApplied, float selfForceApplied, Vector3 point)
     {
         Damage = damage;
         ForceApplied = forceApplied;
@@ -122,5 +118,5 @@ public class TenseExplisionHit
 
 public interface ITenseExplode
 {
-    public void HandleTenseExplosion(TenseExplisionHit hit);
+    public void HandleTenseExplosion(TenseExplosionHit hit);
 }

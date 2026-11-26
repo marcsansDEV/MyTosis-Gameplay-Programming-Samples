@@ -43,13 +43,11 @@ public class TeleportLilTosiAbility : BaseLilTosiAbility
         {  
             m_Player.Controller.AddImpulse(Vector3.zero,true,true);
             m_Player.Controller.ForceLock(true);
-            // m_Player.Controller.enabled = false;
             OnTeleport?.Invoke(m_LilTosi);
             yield return new WaitForSeconds(m_InDelay);
             m_Player.transform.position = m_TeleportMark.transform.position;
             m_Player.transform.rotation = m_TeleportMark.transform.rotation;
             yield return new WaitForSeconds(m_OutDelay);
-            // m_Player.Controller.enabled = true;
             m_Player.Controller.ForceLock(false);
         }
         

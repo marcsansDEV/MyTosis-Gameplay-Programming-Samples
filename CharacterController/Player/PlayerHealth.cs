@@ -4,6 +4,7 @@ using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 public class PlayerHealth : BasePlayerComponent, ITosiHealthSystem, IRestartLevelElement
 {
@@ -17,7 +18,8 @@ public class PlayerHealth : BasePlayerComponent, ITosiHealthSystem, IRestartLeve
     [SerializeField] private float m_DamagedStateDuration = 0.1f;
     [SerializeField] private int m_MaxHealth;
     [SerializeField] private int m_HitDirVerticalAngle;
-    [SerializeField] private int m_KockUpForce;
+    [FormerlySerializedAs("m_KockUpForce")]
+    [SerializeField] private int m_KnockUpForce;
     [SerializeField] private float m_StunDuration;
     private int m_Health;
 
@@ -65,7 +67,7 @@ public class PlayerHealth : BasePlayerComponent, ITosiHealthSystem, IRestartLeve
         if (m_Immune)
             return;
         
-        KnockUp(hitPoint, m_KockUpForce, m_StunDuration);
+        KnockUp(hitPoint, m_KnockUpForce, m_StunDuration);
         TakeDamage(damage);
         EnterDamaged();
         Invoke(nameof(ExitDamaged), m_DamagedStateDuration);
@@ -100,9 +102,9 @@ public class PlayerHealth : BasePlayerComponent, ITosiHealthSystem, IRestartLeve
         }
     }
 
-    public void Heal(int ammount)
+    public void Heal(int amount)
     {
-        m_Health += ammount;
+        m_Health += amount;
         GameUIManager.GetInstance().TryUpdateHearts(m_Health);
         if (m_Health > m_MaxHealth)
             m_Health = m_MaxHealth;
@@ -112,7 +114,7 @@ public class PlayerHealth : BasePlayerComponent, ITosiHealthSystem, IRestartLeve
 
     private void KnockUp(Vector3 hitPoint, float impactForce, float stunDuration)
     {
-        var l_ImpactForward = UtilsMethods.GetDirecton(hitPoint, transform.position);
+        var l_ImpactForward = UtilsMethods.GetDirection(hitPoint, transform.position);
         l_ImpactForward.y = 0f;
         l_ImpactForward.Normalize();
         l_ImpactForward =

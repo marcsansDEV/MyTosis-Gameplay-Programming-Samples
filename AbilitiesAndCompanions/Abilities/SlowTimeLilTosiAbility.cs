@@ -11,12 +11,11 @@ public class SlowTimeLilTosiAbility : BaseLilTosiAbility
     public static Action<bool> OnSlowTimeChanged;
 
     private float m_FixedDeltaTime;
-    private static bool TimeIsSlowed;
+    private static bool m_TimeIsSlowed;
     [Header("Slow Time Settings")]
     [SerializeField] private float m_RecoverTime = 2f;
     [SerializeField] private float m_FadeInOutDuration = 1f;
     [SerializeField] private float m_SlowdownScale = 0.05f;
-    //[SerializeField] private float m_FadeSpeed = .5f;
 
     private void Awake()
     {
@@ -30,7 +29,7 @@ public class SlowTimeLilTosiAbility : BaseLilTosiAbility
         {
             if (GameManagerStateMachine.Instance.Context.Paused)
                 return 0f;
-            return TimeIsSlowed
+            return m_TimeIsSlowed
                 ? Time.unscaledDeltaTime
                 : Time.deltaTime;
         }
@@ -42,7 +41,7 @@ public class SlowTimeLilTosiAbility : BaseLilTosiAbility
         {
             if (GameManagerStateMachine.Instance.Context.Paused)
                 return 0f;
-            return TimeIsSlowed
+            return m_TimeIsSlowed
                 ? Time.fixedUnscaledDeltaTime
                 : Time.fixedDeltaTime;
         }
@@ -59,8 +58,8 @@ public class SlowTimeLilTosiAbility : BaseLilTosiAbility
     {
         while (true)
         {
-            if (!Active && m_TimeLiquidAmmount < m_MaxTimeLiquid)
-                m_TimeLiquidAmmount += Time.deltaTime * (m_MaxTimeLiquid / m_RecoverTime);
+            if (!Active && m_Charge < m_MaxCharge)
+                m_Charge += Time.deltaTime * (m_MaxCharge / m_RecoverTime);
             yield return null;
         }
     }
@@ -68,7 +67,7 @@ public class SlowTimeLilTosiAbility : BaseLilTosiAbility
     protected override void Activate()
     {
         StartCoroutine(StartSlowTime(1.0f, m_SlowdownScale, m_FadeInOutDuration));
-        TimeIsSlowed = true;
+        m_TimeIsSlowed = true;
         Icon = m_Icons[1];
     }
 
@@ -107,7 +106,6 @@ public class SlowTimeLilTosiAbility : BaseLilTosiAbility
         Time.fixedDeltaTime = GameManagerStateMachine.Instance.Context.Paused
             ? m_FixedDeltaTime
             : m_FixedDeltaTime * Time.timeScale;
-        // Time.fixedDeltaTime = m_FixedDeltaTime * Time.timeScale;
     }
 
     IEnumerator SlowTime()
@@ -116,10 +114,10 @@ public class SlowTimeLilTosiAbility : BaseLilTosiAbility
         Time.timeScale = m_SlowdownScale;
         SetFixedDeltaTime();
 
-        m_TimeLiquidAmmount = m_MaxTimeLiquid;
-        while (m_TimeLiquidAmmount > 0)
+        m_Charge = m_MaxCharge;
+        while (m_Charge > 0)
         {
-            m_TimeLiquidAmmount -= AdaptedDeltaTime;
+            m_Charge -= AdaptedDeltaTime;
             if (Canceled())
             {
                 StartCoroutine(EndSlowTime(m_SlowdownScale, 1f, m_FadeInOutDuration));
@@ -133,7 +131,7 @@ public class SlowTimeLilTosiAbility : BaseLilTosiAbility
     IEnumerator EndSlowTime(float start, float end, float time)
     {
         float l_Timer = 0.0f;
-        m_TimeLiquidAmmount = 0f;
+        m_Charge = 0f;
         RuntimeManager.PlayOneShot(m_EndSlowRef);
         while (l_Timer < time)
         {
@@ -155,9 +153,9 @@ public class SlowTimeLilTosiAbility : BaseLilTosiAbility
         Icon = m_Icons[0];
         Time.timeScale = 1f;
         SetFixedDeltaTime();
-        TimeIsSlowed = false;
+        m_TimeIsSlowed = false;
         OnSlowTimeChanged?.Invoke(false);
-        m_TimeLiquidAmmount = 0f;
+        m_Charge = 0f;
         Active = false;
     }
 
@@ -167,6 +165,6 @@ public class SlowTimeLilTosiAbility : BaseLilTosiAbility
         StopAllCoroutines();
         StartCoroutine(FillLiquidWhenPossible());
         RestartTime();
-        TimeIsSlowed = false;
+        m_TimeIsSlowed = false;
     }
 }

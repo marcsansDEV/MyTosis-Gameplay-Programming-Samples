@@ -80,7 +80,6 @@ public class PossessionLilTosiAbility : BaseLilTosiAbility
         base.Init(lilTosi);
         m_PossessionSound = UtilsMethods.GetInstanceByGUID("{4934250d-a973-439a-bbcc-d5ac37440b6b}");
         RuntimeManager.AttachInstanceToGameObject(m_PossessionSound, lilTosi.transform);
-        Debug.Log(m_PossessionSound.isValid());
     }
 
     protected override void Activate()
@@ -97,7 +96,6 @@ public class PossessionLilTosiAbility : BaseLilTosiAbility
     private void StartPossession()
     {
         m_PossessionSound.start();
-        Debug.Log("Start Sound");
 
         IsActivated = true;
         m_Blocked = true;
@@ -120,10 +118,10 @@ public class PossessionLilTosiAbility : BaseLilTosiAbility
     {
         yield return null;
         OnStartPossession?.Invoke(m_LilTosi);
-        m_TimeLiquidAmmount = m_MaxTimeLiquid;
-        while (m_TimeLiquidAmmount > 0f && !Canceled())
+        m_Charge = m_MaxCharge;
+        while (m_Charge > 0f && !Canceled())
         {
-            m_TimeLiquidAmmount -= Time.unscaledDeltaTime;
+            m_Charge -= Time.unscaledDeltaTime;
             UpdateInput();
             yield return null;
         }
@@ -191,7 +189,6 @@ public class PossessionLilTosiAbility : BaseLilTosiAbility
     private void StopPossession()
     {
         m_PossessionSound.stop(STOP_MODE.ALLOWFADEOUT);
-        Debug.Log("Stop Sound");
         TimerManager.GetInstance().AddTimer(new Timer(1.2f, "UnBLOCK Possession"), action: ResetLiquid);
         m_LilTosi.Controller.OnBeforeMove -= UpdatePossession;
         m_LilTosi.Controller.Gravity = m_PreviousGravity;
@@ -199,7 +196,7 @@ public class PossessionLilTosiAbility : BaseLilTosiAbility
         PossessedLilTosi = null;
         IsActivated = false;
         Icon = m_Icons[0];
-        m_TimeLiquidAmmount = m_MaxTimeLiquid;
+        m_Charge = m_MaxCharge;
     }
 
     private void ResetLiquid()
@@ -211,16 +208,7 @@ public class PossessionLilTosiAbility : BaseLilTosiAbility
     {
         UpdateJump();
         UpdateMovement();
-        // UpdateRotation();
     }
-
-    // private void UpdateRotation()
-    // {
-    //     var l_Dir = m_Player.Input.Horizontal;
-    //     if (l_Dir == Vector3.zero) return;
-    //     Quaternion l_DesiredRotation = Quaternion.LookRotation(l_Dir);
-    //     m_LilTosi.transform.rotation = Quaternion.Lerp(m_LilTosi.transform.rotation, l_DesiredRotation, m_LerpRotation);
-    // }
 
     private void UpdateMovement()
     {
@@ -290,7 +278,6 @@ public class PossessionLilTosiAbility : BaseLilTosiAbility
     public override void Reset()
     {
         if (!Active) return;
-        Debug.Log("RESET");
         OnEndPossession?.Invoke(m_LilTosi);
         StopAllCoroutines();
         StopPossession();

@@ -23,10 +23,10 @@ public class ExternalTriggerCall : MonoBehaviour
     private void Awake()
     {
         Collider = GetComponent<Collider>();
-        var rb = GetComponent<Rigidbody>();
-        if (rb == null)
-            rb = gameObject.AddComponent<Rigidbody>();
-        rb.isKinematic = true;
+        var l_Rb = GetComponent<Rigidbody>();
+        if (l_Rb == null)
+            l_Rb = gameObject.AddComponent<Rigidbody>();
+        l_Rb.isKinematic = true;
     }
 
     private void Update()

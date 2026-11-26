@@ -57,16 +57,6 @@ public class PlayerInputManager : MonoBehaviour
         GameManagerStateMachine.Instance.Context.StaticData.Player.Input.FindActionMap("Player").Enable();
     }
 
-    // public void LockCameraInput(bool locked)
-    // {
-    //     if (m_CameraInputProvider == null)
-    //     {
-    //         m_CameraInputProvider = VirtualCameraManager.GetInstance().GetCVC(CustomVirtualCamera.VcType.Standard)
-    //             .GetComponent<CinemachineInputProvider>();
-    //     }
-    //     m_CameraInputProvider.enabled = !locked;
-    // }
-    
     private Vector3 GetWorldToCameraVector(Vector2 input)
     {
         Vector3 l_Forward = m_TPCameraTransform.forward;

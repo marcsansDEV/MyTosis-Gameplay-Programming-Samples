@@ -10,7 +10,7 @@ using Random = UnityEngine.Random;
 
 public static class UtilsMethods
 {
-    private static GameObject descendant = null;
+    private static GameObject m_Descendant = null;
     public static bool ContainsLayer(LayerMask mask, int layer)
     {
          return (mask.value & 1 << layer) > 0;
@@ -23,14 +23,14 @@ public static class UtilsMethods
 
     public static void ResetAllAnimatorTriggers(Animator animator)
     {
-        foreach (var trigger in animator.parameters)
+        foreach (var l_Trigger in animator.parameters)
         {
-            if (trigger.type == AnimatorControllerParameterType.Trigger)
-                animator.ResetTrigger(trigger.name);
+            if (l_Trigger.type == AnimatorControllerParameterType.Trigger)
+                animator.ResetTrigger(l_Trigger.name);
         }
     }
     
-    public static Vector3 GetDirecton(Vector3 from, Vector3 to)
+    public static Vector3 GetDirection(Vector3 from, Vector3 to)
     {
         return (to - from).normalized;
     }
@@ -55,19 +55,19 @@ public static class UtilsMethods
     
     public static GameObject ReturnRepeatChild(GameObject parent, string childName)
     {
-        foreach (Transform child in parent.transform)
+        foreach (Transform l_Child in parent.transform)
         {
-            if (child.name == childName)
+            if (l_Child.name == childName)
             {
-                descendant = child.gameObject;
+                m_Descendant = l_Child.gameObject;
                 break;
             }
             else
             {
-                ReturnRepeatChild(child.gameObject, childName);
+                ReturnRepeatChild(l_Child.gameObject, childName);
             }
         }
-        return descendant;
+        return m_Descendant;
     }
 
     public static T[] ReturnRepeatChildren<T>(GameObject parent, string childName) where T: Component
@@ -77,16 +77,16 @@ public static class UtilsMethods
 
     public static GameObject ReturnRepeatParent(GameObject child, string parentName)
     {
-        GameObject parent = child.transform.parent.gameObject;
-        if (parent.name == parentName) { return parent; }
-        else { return ReturnRepeatParent(parent, parentName); }
+        GameObject l_Parent = child.transform.parent.gameObject;
+        if (l_Parent.name == parentName) { return l_Parent; }
+        else { return ReturnRepeatParent(l_Parent, parentName); }
     }
     
     public static Vector3 GetMiddlePosition(Vector3 posA, Vector3 posB)
     {
-        Vector3 middlePos = posB - posA;
-        middlePos = posA + middlePos / 2.0f;
-        return middlePos;
+        Vector3 l_MiddlePos = posB - posA;
+        l_MiddlePos = posA + l_MiddlePos / 2.0f;
+        return l_MiddlePos;
     }
  
     public static void Shuffle<T>(this IList<T> list)  

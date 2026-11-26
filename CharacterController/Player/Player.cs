@@ -55,7 +55,6 @@ public class Player : Singleton<Player>, IRestartLevelElement
         m_Projector.SetActive(false);
         Attack.ActivateAttackTrigger(false);
         Animation.ResetAnimator();
-        // HealthSystem.EnterImmune();
         TimerManager.GetInstance().AddTimer
             (
                 GameManagerStateMachine.Instance.Context.StaticData.Player.RespawnTime + 0.01f,
@@ -67,7 +66,6 @@ public class Player : Singleton<Player>, IRestartLevelElement
                     m_MeshHider.SetActiveMesh(true);
                     m_Projector.SetActive(true);
                     Attack.SetIsOnAttack(false);
-                    // HealthSystem.Invoke("ExitImmune", 1f);
                 },
                 "EnablingPlayer"
             );
