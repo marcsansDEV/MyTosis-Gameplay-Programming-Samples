@@ -188,7 +188,7 @@ public class PossessionLilTosiAbility : BaseLilTosiAbility
     private void StopPossession()
     {
         m_PossessionSound.stop(STOP_MODE.ALLOWFADEOUT);
-        TimerManager.GetInstance().AddTimer(new Timer(1.2f, "UnBLOCK Possession"), action: ResetLiquid);
+        TimerManager.GetInstance().AddTimer(new Timer(1.2f, "UnBLOCK Possession"), action: UnblockActivation);
         m_LilTosi.Controller.OnBeforeMove -= UpdatePossession;
         m_LilTosi.Controller.Gravity = m_PreviousGravity;
         SetPlayerActive(true);
@@ -198,7 +198,7 @@ public class PossessionLilTosiAbility : BaseLilTosiAbility
         m_Charge = m_MaxCharge;
     }
 
-    private void ResetLiquid()
+    private void UnblockActivation()
     {
         m_Blocked = false;
     }

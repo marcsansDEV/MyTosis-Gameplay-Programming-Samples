@@ -51,10 +51,10 @@ public class SlowTimeLilTosiAbility : BaseLilTosiAbility
     {
         base.Init(lilTosi);
         m_FixedDeltaTime = Time.fixedDeltaTime;
-        StartCoroutine(FillLiquidWhenPossible());
+        StartCoroutine(FillChargeWhenPossible());
     }
 
-    private IEnumerator FillLiquidWhenPossible()
+    private IEnumerator FillChargeWhenPossible()
     {
         while (true)
         {
@@ -163,7 +163,7 @@ public class SlowTimeLilTosiAbility : BaseLilTosiAbility
     {
         base.Reset();
         StopAllCoroutines();
-        StartCoroutine(FillLiquidWhenPossible());
+        StartCoroutine(FillChargeWhenPossible());
         RestartTime();
         m_TimeIsSlowed = false;
     }
