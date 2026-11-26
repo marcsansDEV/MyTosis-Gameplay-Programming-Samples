@@ -46,7 +46,7 @@ public class LilTosiPack : Singleton<LilTosiPack>
             }
         }
 
-        Debug.LogError(("Could not return the type {0} requested.", type.ToString()));
+        Debug.LogError($"Could not return the type {type} requested.");
         return null;
     }
 }
