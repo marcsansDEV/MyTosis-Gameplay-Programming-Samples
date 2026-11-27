@@ -4,7 +4,10 @@ Code samples from **My Tosis: A Life Mission**, a 3D platformer with puzzle elem
 
 This is a selection of that code, not the full project, and it will not compile on its own. [What is not included](#what-is-not-included) lists everything it depends on.
 
-<!-- TODO: gameplay GIF -->
+<p align="center">
+  <img src="Media/01-overview.webp" alt="Gameplay montage: gliding over the sea, possessing a Tosi, slowing time, an explosion and platforming between flowers" width="720">
+</p>
+
 <!-- TODO: links to the itch.io page and the full gameplay video -->
 
 ## The samples
@@ -73,12 +76,13 @@ The history is split into small commits so every change can be checked on its ow
 5. Removal of one helper whose authorship I could not confirm.
 6. The last methods still using an old name, renamed.
 7. This documentation and the diagrams.
+8. The gameplay clips.
 
 ## About this repository
 
 All the code in this repository was written by me during the development of My Tosis.
 
-I used Claude (Anthropic) to help choose the samples, organize the folders, write this documentation and draw the diagrams. The changes made to the code itself are only these:
+I used Claude (Anthropic) to help choose the samples, organize the folders, write this documentation, draw the diagrams and pick and encode the gameplay clips. The changes made to the code itself are only these:
 
 - **Renamed identifiers.** Typos fixed (`TenseExplisionHit`, `m_GetAbsorvedDelay`, `DeatachLilTosi`, `GetDirecton`, `m_KockUpForce` and a few more), "time liquid" renamed to "charge", and missing `m_` and `l_` prefixes added. Renamed serialized fields keep their saved values through `[FormerlySerializedAs]`.
 - **Field visibility.** Twelve public fields made private with `[SerializeField]`.

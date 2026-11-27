@@ -1,6 +1,8 @@
 # Character Controller
 
-<!-- TODO: GIF of walking, double jump and glide -->
+<p align="center">
+  <img src="../Media/02-movement.webp" alt="The player running and jumping between floating islands" width="720">
+</p>
 
 The player movement in My Tosis: walking, a double jump, gliding and a basic attack. It runs on a kinematic controller I wrote on top of Unity's `CharacterController`, without a Rigidbody.
 

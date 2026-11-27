@@ -1,6 +1,8 @@
 # Abilities and Companions
 
-<!-- TODO: GIF of creating, throwing and using a Lil Tosi -->
+<p align="center">
+  <img src="../Media/03-companions.webp" alt="Aiming with the trajectory preview and throwing a Lil Tosi onto a flower" width="720">
+</p>
 
 In My Tosis the player can create two small companions, the Lil Tosis: Tipi and Tense. Only one exists at a time. The player can carry it, throw it, pick it up again or absorb it, and each Tosi has two abilities: one for when the player is holding it and one for when it has been released.
 
@@ -8,6 +10,17 @@ In My Tosis the player can create two small companions, the Lil Tosis: Tipi and 
 |---|---|---|
 | Tipi | **Teleport**: place a mark, press again to return to it | **Possession**: control the Tosi for up to 11 seconds |
 | Tense | **Slow Time**: slow the world down for up to 6.5 seconds | **Explosion**: detonate the Tosi |
+
+<table>
+  <tr>
+    <td align="center"><img src="../Media/04-teleport.webp" alt="Teleport: placing a mark and returning to it" width="360"><br><b>Teleport</b></td>
+    <td align="center"><img src="../Media/05-possession.webp" alt="Possession: controlling the thrown Tosi" width="360"><br><b>Possession</b></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="../Media/06-slowtime.webp" alt="Slow Time: the world slows down while the player keeps its speed" width="360"><br><b>Slow Time</b></td>
+    <td align="center"><img src="../Media/07-explosion.webp" alt="Explosion: throwing Tense and detonating it" width="360"><br><b>Explosion</b></td>
+  </tr>
+</table>
 
 The split came from design. Held abilities make the player keep the Tosi close, and released ones let them act from a distance.
 
